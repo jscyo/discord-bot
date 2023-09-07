@@ -2,31 +2,26 @@ const { Client } = require("discord.js")
 require("dotenv").config()
 
 const BOT_TOKEN = process.env.BOT_TOKEN
-
-const bot = new Client({ intents: ["Guilds", "GuildMessages", "MessageContent", "GuildMembers"] })
-bot.login(BOT_TOKEN)
-
-bot.on("ready", () => {
-    console.log(`Bot ${bot.user.tag} is running`)
-})
-
-
 const INTRODUCIONS_CHANNEL_ID = process.env.INTRODUCIONS_CHANNEL_ID
 const SUPPORT_CHANNEL_ID = process.env.SUPPORT_CHANNEL_ID
 const MEMBER_ROLE_ID = process.env.MEMBER_ROLE_ID
 
-function generateIntroductionMessage(memberId) {
-    return `Hey <@${memberId}>, please introduce yourself to gain access to the rest of the server. Your introduction must start with !intro and must be longer than 20 characters.`
-}
 
+const bot = new Client({ intents: ["Guilds", "GuildMessages", "MessageContent", "GuildMembers"] })
 
-bot.on('guildMemberAdd', async member => {
-    const channel = await bot.channels.fetch(INTRODUCIONS_CHANNEL_ID)
-    channel.send({ content: generateIntroductionMessage(member.id) })
+bot.login(BOT_TOKEN)
+bot.on("ready", () => {
+    console.log(`Bot ${bot.user.tag} is running`)
 })
 
-let i = 0;
+// Listen for new members joining the server
+bot.on('guildMemberAdd', async member => {
+    const channel = await bot.channels.fetch(INTRODUCIONS_CHANNEL_ID)
+    channel.send({ content: `Hey <@${member.id}>, please introduce yourself to gain access to the rest of the server. Your introduction must start with !intro and must be longer than 20 characters.` })
+})
 
+
+// Listen for messages
 bot.on("messageCreate", async msg => {
 
     if (msg.channel.id.toString() == INTRODUCIONS_CHANNEL_ID) {
