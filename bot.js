@@ -48,7 +48,7 @@ bot.on("messageCreate", async msg => {
         try {
             const memberRole = await msg.guild.roles.fetch(MEMBER_ROLE_ID)
             await member.roles.add(memberRole)
-            return msg.reply(`Successfully introduced yourself! You now have access to the rest of the server. If you have any questions, please head to the <#${SUPPORT_CHANNEL_ID}> channel.`)
+            return msg.reply(`Successfully introduced yourself! You now have access to the rest of the server. If you have any questions, please head to the <#${SUPPORT_CHANNEL_ID}> channel to ask questions.`)
 
         } catch (error){
             console.log("Error: ", error)
